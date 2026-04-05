@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>AwesomeWebsite</title>
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- HEADER SECTION -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="max-w-[1200px] mx-auto flex justify-between items-center p-4">
+
+            <!-- Logo -->
+            <h1 class="text-2xl font-bold text-blue-500">
+                Awesome<span class="text-zinc-800">Website</span>
+            </h1>
+
+            <!-- Desktop Nav -->
+            <ul class="hidden md:flex gap-6 text-zinc-700 font-medium">
+                <li><a href="#home"
+                        class="hover:text-blue-500 transition border-b-2 border-transparent hover:border-blue-500">Home</a>
+                </li>
+                <li><a href="#about"
+                        class="hover:text-blue-500 transition border-b-2 border-transparent hover:border-blue-500">About</a>
+                </li>
+                <li><a href="#services"
+                        class="hover:text-blue-500 transition border-b-2 border-transparent hover:border-blue-500">Services</a>
+                </li>
+                <li><a href="#pricing"
+                        class="hover:text-blue-500 transition border-b-2 border-transparent hover:border-blue-500">Pricing</a>
+                </li>
+                <li><a href="#contact"
+                        class="hover:text-blue-500 transition border-b-2 border-transparent hover:border-blue-500">Contact</a>
+                </li>
+            </ul>
+
+            <!-- Desktop Buttons -->
+            <div class="hidden md:flex justify-center items-center gap-4">
+                <button type="button" onclick="openModal('signup')"
+                    class="btn-primary  bg-blue-500 px-4 py-2 hover:bg-blue-600 text-white rounded-lg">
+                    Sign Up
+                </button>
+                <button type="button" onclick="openModal('login')"
+                    class="btn-secondary bg-blue-500 px-4 py-2 hover:bg-blue-600 text-white rounded-lg">
+                    Login
+                </button>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button type="button" id="mobile-menu-btn" class="md:hidden text-2xl text-zinc-700 p-2">
+                <i class="fas fa-bars"></i> .
+            </button>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-nav" class="hidden md:hidden bg-white border-t border-zinc-200">
+            <div class="flex flex-col p-4 gap-2 max-w-[1200px] mx-auto">
+                <a href="#home" class="block p-3 hover:bg-blue-50 rounded transition">Home</a>
+                <a href="#about" class="block p-3 hover:bg-blue-50 rounded transition">About</a>
+                <a href="#services" class="block p-3 hover:bg-blue-50 rounded transition">Services</a>
+                <a href="#pricing" class="block p-3 hover:bg-blue-50 rounded transition">Pricing</a>
+                <a href="#contact" class="block p-3 hover:bg-blue-50 rounded transition">Contact</a>
+                <div class="flex gap-2 mt-2 pt-2 border-t border-zinc-200">
+                    <button onclick="openModal('login')"
+                        class="flex-1 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">Login</button>
+                    <button onclick="openModal('signup')"
+                        class="flex-1 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">Sign
+                        Up</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div id="modal" class="fixed inset-0 bg-black/50 items-center justify-center z-50 hidden overflow-y-auto">
+            <div
+                class="bg-white rounded-2xl p-6 w-[90%] max-w-[400px] shadow-lg relative transform transition-all duration-300 my-8">
+
+                <!-- Close Button -->
+                <button onclick="closeModal()"
+                    class="absolute top-4 right-4 text-2xl text-zinc-400 hover:text-zinc-600 transition p-1 rounded hover:bg-zinc-100"
+                    aria-label="Close modal">
+                    <i class="fas fa-times"></i>
+                </button>
+
+                <!-- Title -->
+                <h2 id="form-title" class="text-2xl font-bold mb-6 text-center text-zinc-800">Login</h2>
+
+                <!-- Form -->
+                <form id="authForm" class="space-y-4">
+                    <!-- Email Field -->
+                    <div>
+                        <label class="block text-sm font-medium mb-2 text-zinc-700">
+                            Email <span class="text-red-500">*</span>
+                        </label>
+                        <input type="email" id="email" placeholder="Enter your email" required
+                            class="w-full p-3 border border-zinc-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition placeholder-zinc-400" />
+                        <span class="text-red-500 text-sm hidden" id="email-error"></span>
+                    </div>
+
+                    <!-- Password Field -->
+                    <div>
+                        <label class="block text-sm font-medium mb-2 text-zinc-700">
+                            Password <span class="text-red-500">*</span>
+                        </label>
+                        <input type="password" id="password" placeholder="Enter your password" required
+                            class="w-full p-3 border border-zinc-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition placeholder-zinc-400" />
+                        <span class="text-red-500 text-sm hidden" id="password-error"></span>
+                    </div>
+
+                    <!-- Confirm Password (Signup Only) -->
+                    <div id="confirm-password-group" class="hidden">
+                        <label class="block text-sm font-medium mb-2 text-zinc-700">
+                            Confirm Password <span class="text-red-500">*</span>
+                        </label>
+                        <input type="password" id="confirm-password" placeholder="Confirm your password"
+                            class="w-full p-3 border border-zinc-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition placeholder-zinc-400" />
+                        <span class="text-red-500 text-sm hidden" id="confirm-password-error"></span>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" id="submitBtn"
+                        class="w-full bg-blue-500 text-white py-3 rounded-lg font-semibold hover:bg-blue-600 transition disabled:opacity-50 disabled:cursor-not-allowed">
+                        Sign In
+                    </button>
+
+                    <!-- Success Message -->
+                    <div id="successMessage"
+                        class="hidden p-3 bg-green-100 text-green-800 rounded-lg text-sm text-center"></div>
+
+                    <!-- Error Message -->
+                    <div id="errorMessage" class="hidden p-3 bg-red-100 text-red-800 rounded-lg text-sm text-center">
+                    </div>
+
+                    <!-- Switch Text -->
+                    <p id="switch-text" class="text-sm text-center text-zinc-600 mt-4"></p>
+                </form>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section id="home" class="min-h-screen flex items-center relative overflow-hidden">
+
+        <!-- Background Video with Fallback -->
+        <video autoplay muted loop playsinline poster="assets/bghero-poster.jpg"
+            class="absolute inset-0 w-full h-full object-cover filter brightness-50">
+            <source src="assets/bghero.mp4" type="video/mp4">
+            <img src="assets/bghero-poster.jpg" alt="Background"
+                class="absolute inset-0 w-full h-full object-cover filter brightness-50">
+        </video>
+
+        <!-- Content -->
+        <div class="max-w-[1200px] mx-auto px-4 text-center relative z-20 w-full">
+
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-zinc-100 mb-6 leading-tight">
+                <span id="typing-text" class="inline-block"></span><span class="animate-pulse ml-2">|</span>
+            </h1>
+
+            <p class="text-zinc-100 mb-8 max-w-2xl mx-auto text-lg leading-relaxed">
+                Discover amazing content and connect with us. Build your digital presence with our comprehensive web
+                solutions.
+            </p>
+
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <button type="button"
+                    class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition duration-300">
+                    Get Started
+                </button>
+                <button type="button"
+                    class="px-4 py-2 border border-zinc-100 text-zinc-100 rounded-lg hover:bg-zinc-200 hover:text-zinc-800 transition duration-300">
+                    Learn More
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ABOUT SECTION -->
+    <section id="about" class="py-16 md:py-20 bg-zinc-50">
+        <div class="max-w-[1200px] mx-auto px-4 grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+
+            <!-- Text Section -->
+            <div>
+                <h2 class="text-4xl font-bold mb-6">
+                    <span class="text-blue-500">About</span> <span class="text-zinc-800">Us</span>
+                </h2>
+
+                <p class="text-zinc-600 font-normal text-base leading-relaxed mb-6">
+                    We're a team of dedicated professionals passionate about creating digital experiences that matter.
+                    With over a decade of combined experience, we've helped hundreds of businesses transform their
+                    online presence.
+                </p>
+
+                <p class="text-zinc-600 font-normal text-base leading-relaxed">
+                    From concept to deployment, we ensure quality, reliability, and innovation in every project.
+                </p>
+            </div>
+
+            <!-- Image Section -->
+            <div class="border border-zinc-200 rounded-lg overflow-hidden shadow-md">
+                <img src="https://www.godaddy.com/resources/wp-content/uploads/2026/03/airo-builder-featured-65zSXX.tmp_.jpeg"
+                    alt="About Us Image" class="w-full h-80 object-cover hover:scale-105 transition duration-300" />
+            </div>
+        </div>
+    </section>
+
+    <!-- PRICING SECTION -->
+    <section id="pricing" class="py-16 md:py-20 bg-zinc-100">
+        <div class="max-w-[1200px] mx-auto px-4">
+
+            <!-- Section Header -->
+            <div class="text-center mb-12 md:mb-16">
+                <h2 class="text-4xl font-bold">
+                    <span class="text-blue-500">Pay Once,</span> <span class="text-zinc-800">Use Forever</span>
+                </h2>
+                <p class="text-zinc-600 text-lg mt-4">Choose the perfect plan for your needs</p>
+            </div>
+
+            <!-- Pricing Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+                <!-- Card 1: Basic -->
+                <div
+                    class="flex flex-col rounded-2xl border border-zinc-200 bg-white p-6 md:p-8 shadow-sm hover:shadow-md transition">
+                    <h3 class="text-xl font-semibold text-zinc-800 mb-6">Basic</h3>
+
+                    <div class="mb-8">
+                        <span class="text-5xl font-bold text-zinc-800">$20</span>
+                        <span class="text-zinc-600 ml-2">/month</span>
+                    </div>
+
+                    <p class="text-zinc-600 text-sm mb-6">
+                        Perfect for individuals and small projects getting started.
+                    </p>
+
+                    <button type="button"
+                        class="mb-6 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition duration-300">Get
+                        Started</button>
+
+                    <!-- Features List -->
+                    <ul class="space-y-4 text-left text-zinc-600 text-sm flex-1">
+                        <li class="flex items-center gap-3">
+                            <svg class="h-5 w-5 text-green-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" />
+                            </svg>
+                            <span>10,000 monthly visitors</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="h-5 w-5 text-green-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" />
+                            </svg>
+                            <span>Unlimited widgets</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="h-5 w-5 text-green-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" />
+                            </svg>
+                            <span>Basic analytics</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="h-5 w-5 text-green-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" />
+                            </svg>
+                            <span>Email support</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Card 2: Essential (POPULAR) -->
+                <div
+                    class="relative flex flex-col rounded-2xl border-2 border-blue-500 bg-white p-6 md:p-8 shadow-lg hover:shadow-xl transition">
+                    <div
+                        class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white px-4 py-1 rounded-full text-sm font-bold whitespace-nowrap">
+                        MOST POPULAR
+                    </div>
+
+                    <h3 class="text-xl font-semibold text-zinc-800 mb-6">Essential</h3>
+
+                    <div class="mb-8">
+                        <span class="text-5xl font-bold text-zinc-800">$39</span>
+                        <span class="text-zinc-600 ml-2">/month</span>
+                    </div>
+
+                    <p class="text-zinc-600 text-sm mb-6">
+                        Ideal for growing businesses that need more power.
+                    </p>
+
+                    <button type="button"
+                        class="mb-6 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition duration-300">Get
+                        Started</button>
+
+                    <!-- Features List -->
+                    <ul class="space-y-4 text-left text-zinc-600 text-sm flex-1">
+                        <li class="flex items-center gap-3">
+                            <svg class="h-5 w-5 text-green-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" />
+                            </svg>
+                            <span>50,000 monthly visitors</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="h-5 w-5 text-green-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" />
+                            </svg>
+                            <span>Unlimited widgets</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="h-5 w-5 text-green-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" />
+                            </svg>
+                            <span>Advanced analytics</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="h-5 w-5 text-green-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" />
+                            </svg>
+                            <span>Priority support</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Card 3: Growth -->
+                <div
+                    class="flex flex-col rounded-2xl border border-zinc-200 bg-white p-6 md:p-8 shadow-sm hover:shadow-md transition">
+                    <h3 class="text-xl font-semibold text-zinc-800 mb-6">Growth</h3>
+
+                    <div class="mb-8">
+                        <span class="text-5xl font-bold text-zinc-800">$299</span>
+                        <span class="text-zinc-600 ml-2">/year</span>
+                    </div>
+
+                    <p class="text-zinc-600 text-sm mb-6">
+                        For enterprises that need complete control and scale.
+                    </p>
+
+                    <button type="button"
+                        class="mb-6 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition duration-300">Get
+                        Started</button>
+
+                    <!-- Features List -->
+                    <ul class="space-y-4 text-left text-zinc-600 text-sm flex-1">
+                        <li class="flex items-center gap-3">
+                            <svg class="h-5 w-5 text-green-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" />
+                            </svg>
+                            <span>Unlimited visitors</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="h-5 w-5 text-green-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" />
+                            </svg>
+                            <span>Unlimited widgets</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="h-5 w-5 text-green-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" />
+                            </svg>
+                            <span>Custom analytics</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="h-5 w-5 text-green-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" />
+                            </svg>
+                            <span>24/7 dedicated support</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVICES SECTION -->
+    <section id="services" class="py-16 md:py-20 bg-white">
+        <div class="max-w-[1200px] mx-auto px-4">
+
+            <!-- Section Header -->
+            <div class="text-center mb-12 md:mb-16">
+                <h2 class="text-4xl font-bold">
+                    <span class="text-blue-500">Our</span> <span class="text-zinc-800">Services</span>
+                </h2>
+                <p class="text-zinc-600 text-lg mt-4">
+                    Building seamless, scalable web applications from front to back
+                </p>
+            </div>
+
+            <!-- Service Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                <!-- Frontend Development -->
+                <div
+                    class="bg-gradient-to-br from-blue-50 to-blue-100 p-8 rounded-xl hover:shadow-lg transform hover:-translate-y-1 transition duration-300 border border-blue-200">
+                    <div class="flex justify-center mb-6">
+                        <div class="p-4 bg-blue-500 rounded-lg">
+                            <i class="fas fa-code text-white text-3xl"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-zinc-800 mb-4 text-center">Frontend Development</h3>
+                    <p class="text-zinc-700 text-center leading-relaxed">
+                        Expert in HTML, CSS, JavaScript, React, and Vue for crafting fast, responsive user interfaces.
+                    </p>
+                </div>
+
+                <!-- Backend Development -->
+                <div
+                    class="bg-gradient-to-br from-purple-50 to-purple-100 p-8 rounded-xl hover:shadow-lg transform hover:-translate-y-1 transition duration-300 border border-purple-200">
+                    <div class="flex justify-center mb-6">
+                        <div class="p-4 bg-purple-500 rounded-lg">
+                            <i class="fas fa-server text-white text-3xl"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-zinc-800 mb-4 text-center">Backend Development</h3>
+                    <p class="text-zinc-700 text-center leading-relaxed">
+                        Experienced in Node.js, Express, Python, MySQL, and MongoDB for building secure and scalable
+                        APIs.
+                    </p>
+                </div>
+
+                <!-- DevOps & Deployment -->
+                <div
+                    class="bg-gradient-to-br from-green-50 to-green-100 p-8 rounded-xl hover:shadow-lg transform hover:-translate-y-1 transition duration-300 border border-green-200">
+                    <div class="flex justify-center mb-6">
+                        <div class="p-4 bg-green-500 rounded-lg">
+                            <i class="fas fa-cloud-upload-alt text-white text-3xl"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-zinc-800 mb-4 text-center">DevOps & Deployment</h3>
+                    <p class="text-zinc-700 text-center leading-relaxed">
+                        Skilled with Docker, GitHub Actions, AWS, and CI/CD pipelines to automate and scale application
+                        delivery.
+                    </p>
+                </div>
+
+                <!-- UI/UX Design -->
+                <div
+                    class="bg-gradient-to-br from-orange-50 to-orange-100 p-8 rounded-xl hover:shadow-lg transform hover:-translate-y-1 transition duration-300 border border-orange-200">
+                    <div class="flex justify-center mb-6">
+                        <div class="p-4 bg-orange-500 rounded-lg">
+                            <i class="fas fa-paint-brush text-white text-3xl"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-zinc-800 mb-4 text-center">UI/UX Design</h3>
+                    <p class="text-zinc-700 text-center leading-relaxed">
+                        Creating intuitive and visually appealing user experiences with Figma, Sketch, and Adobe XD.
+                    </p>
+                </div>
+
+                <!-- SEO & Marketing -->
+                <div
+                    class="bg-gradient-to-br from-red-50 to-red-100 p-8 rounded-xl hover:shadow-lg transform hover:-translate-y-1 transition duration-300 border border-red-200">
+                    <div class="flex justify-center mb-6">
+                        <div class="p-4 bg-red-500 rounded-lg">
+                            <i class="fas fa-search text-white text-3xl"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-zinc-800 mb-4 text-center">SEO & Marketing</h3>
+                    <p class="text-zinc-700 text-center leading-relaxed">
+                        Optimizing websites for search engines and creating effective marketing strategies to drive
+                        traffic.
+                    </p>
+                </div>
+
+                <!-- IT Support -->
+                <div
+                    class="bg-gradient-to-br from-teal-50 to-teal-100 p-8 rounded-xl hover:shadow-lg transform hover:-translate-y-1 transition duration-300 border border-teal-200">
+                    <div class="flex justify-center mb-6">
+                        <div class="p-4 bg-teal-500 rounded-lg">
+                            <i class="fas fa-headset text-white text-3xl"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-zinc-800 mb-4 text-center">IT Support</h3>
+                    <p class="text-zinc-700 text-center leading-relaxed">
+                        Providing technical support and maintenance for hardware and software systems to keep you
+                        running smoothly.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT SECTION -->
+    <section id="contact" class="py-16 md:py-20 bg-zinc-100">
+        <div class="max-w-[1200px] mx-auto px-4">
+            <div class="grid md:grid-cols-2 gap-12">
+
+                <!-- Contact Details -->
+                <div>
+                    <h2 class="text-4xl font-bold mb-6">
+                        <span class="text-blue-500">Get In</span> <span class="text-zinc-800">Touch</span>
+                    </h2>
+
+                    <p class="text-lg text-zinc-600 mb-8 leading-relaxed">
+                        Have questions or ready to get started? Reach out to us anytime. We're here to help!
+                    </p>
+
+                    <div class="space-y-6">
+                        <!-- Location -->
+                        <div class="flex items-start gap-4">
+                            <div
+                                class="flex-shrink-0 flex items-center justify-center h-10 w-10 rounded-lg bg-blue-100">
+                                <i class="fas fa-map-marker-alt text-blue-600 text-lg"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg text-zinc-800">Location</h3>
+                                <p class="text-zinc-600">San Francisco, CA 94107</p>
+                            </div>
+                        </div>
+
+                        <!-- Phone -->
+                        <div class="flex items-start gap-4">
+                            <div
+                                class="flex-shrink-0 flex items-center justify-center h-10 w-10 rounded-lg bg-blue-100">
+                                <i class="fas fa-phone text-blue-600 text-lg"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg text-zinc-800">Phone</h3>
+                                <a href="tel:+919876543210" class="text-zinc-600 hover:text-blue-600">+91 9876543210</a>
+                            </div>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="flex items-start gap-4">
+                            <div
+                                class="flex-shrink-0 flex items-center justify-center h-10 w-10 rounded-lg bg-blue-100">
+                                <i class="fas fa-envelope text-blue-600 text-lg"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg text-zinc-800">Email</h3>
+                                <a href="mailto:example@gmail.com"
+                                    class="text-zinc-600 hover:text-blue-600">example@gmail.com</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Form -->
+                <div class="bg-white p-8 md:p-10 rounded-xl shadow-md">
+                    <h3 class="text-2xl font-bold mb-8 text-zinc-800">Send Us a Message</h3>
+
+                    <form id="contactForm" class="space-y-6">
+                        <!-- Name Field -->
+                        <div>
+                            <label for="name" class="block text-sm font-medium mb-2 text-zinc-700">
+                                Your Name <span class="text-red-500">*</span>
+                            </label>
+                            <input type="text" id="name" required
+                                class="w-full px-4 py-3 rounded-lg bg-zinc-50 border border-zinc-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition placeholder-zinc-400"
+                                placeholder="Enter your name" />
+                            <span class="text-red-500 text-sm hidden" id="name-error"></span>
+                        </div>
+
+                        <!-- Email Field -->
+                        <div>
+                            <label for="contact-email" class="block text-sm font-medium mb-2 text-zinc-700">
+                                Email Address <span class="text-red-500">*</span>
+                            </label>
+                            <input type="email" id="contact-email" required
+                                class="w-full px-4 py-3 rounded-lg bg-zinc-50 border border-zinc-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition placeholder-zinc-400"
+                                placeholder="Enter your email" />
+                            <span class="text-red-500 text-sm hidden" id="contact-email-error"></span>
+                        </div>
+
+                        <!-- Message Field -->
+                        <div>
+                            <label for="message" class="block text-sm font-medium mb-2 text-zinc-700">
+                                Message <span class="text-red-500">*</span>
+                            </label>
+                            <textarea id="message" required rows="5"
+                                class="w-full px-4 py-3 rounded-lg bg-zinc-50 border border-zinc-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition placeholder-zinc-400 resize-none"
+                                placeholder="Your message here..."></textarea>
+                            <span class="text-red-500 text-sm hidden" id="message-error"></span>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" id="contactSubmitBtn"
+                            class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed">
+                            Send Message
+                        </button>
+
+                        <!-- Success Message -->
+                        <div id="contactSuccessMessage"
+                            class="hidden p-4 bg-green-100 text-green-800 rounded-lg text-center font-medium"></div>
+
+                        <!-- Error Message -->
+                        <div id="contactErrorMessage"
+                            class="hidden p-4 bg-red-100 text-red-800 rounded-lg text-center font-medium"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-zinc-900 text-zinc-100 py-12 md:py-16">
+        <div class="max-w-[1200px] mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+
+                <!-- Company Info -->
+                <div class="space-y-4">
+                    <h2 class="text-2xl font-bold">
+                        <span class="text-blue-500">Awesome</span><span class="text-white">Website</span>
+                    </h2>
+                    <p class="text-zinc-400 text-sm">Building innovative solutions for the modern world.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-zinc-400 hover:text-blue-500 transition" aria-label="Facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="text-zinc-400 hover:text-blue-500 transition" aria-label="Twitter">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-zinc-400 hover:text-blue-500 transition" aria-label="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="text-zinc-400 hover:text-blue-500 transition" aria-label="LinkedIn">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="text-lg font-semibold text-white mb-4">Quick Links</h3>
+                    <ul class="space-y-2 text-zinc-400">
+                        <li><a href="#home" class="hover:text-blue-500 transition">Home</a></li>
+                        <li><a href="#about" class="hover:text-blue-500 transition">About Us</a></li>
+                        <li><a href="#services" class="hover:text-blue-500 transition">Services</a></li>
+                        <li><a href="#pricing" class="hover:text-blue-500 transition">Pricing</a></li>
+                        <li><a href="#contact" class="hover:text-blue-500 transition">Contact</a></li>
+                    </ul>
+                </div>
+
+                <!-- Services -->
+                <div>
+                    <h3 class="text-lg font-semibold text-white mb-4">Services</h3>
+                    <ul class="space-y-2 text-zinc-400">
+                        <li><a href="#" class="hover:text-blue-500 transition">Web Development</a></li>
+                        <li><a href="#" class="hover:text-blue-500 transition">Mobile Apps</a></li>
+                        <li><a href="#" class="hover:text-blue-500 transition">UI/UX Design</a></li>
+                        <li><a href="#" class="hover:text-blue-500 transition">Digital Marketing</a></li>
+                        <li><a href="#" class="hover:text-blue-500 transition">Cloud Solutions</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact -->
+                <div>
+                    <h3 class="text-lg font-semibold text-white mb-4">Contact Us</h3>
+                    <address class="not-italic text-zinc-400 text-sm space-y-2">
+                        <p>123 Business Ave</p>
+                        <p>San Francisco, CA 94107</p>
+                        <p><a href="mailto:info@company.com" class="hover:text-blue-500 transition">info@company.com</a>
+                        </p>
+                        <p><a href="tel:+11234567890" class="hover:text-blue-500 transition">+1 (123) 456-7890</a></p>
+                    </address>
+                </div>
+            </div>
+
+            <!-- Footer Bottom -->
+            <div class="border-t border-zinc-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-zinc-500 text-sm">© 2026 AwesomeWebsite. All rights reserved.</p>
+                <div class="flex space-x-6 text-sm">
+                    <a href="#" class="text-zinc-500 hover:text-blue-500 transition">Privacy Policy</a>
+                    <a href="#" class="text-zinc-500 hover:text-blue-500 transition">Terms of Service</a>
+                    <a href="#" class="text-zinc-500 hover:text-blue-500 transition">Cookies</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="index.js"></script>
+</body>
+
+</html>
